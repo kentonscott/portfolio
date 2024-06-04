@@ -1,0 +1,20 @@
+---
+    import { contentfulClient } from "../lib/contentful";
+    import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+    import type { EntryFieldTypes } from "contentful";
+
+    // console.log("########## OUR ITEMS #########")
+    // console.dir(videoEntries, { depth: null })
+    // const video = videoEntries.items[0]
+    // console.log('video', video)
+    // console.log('video.fields.video.fields', video.fields.video.fields)
+    // const url = video.fields.video.fields.file.url
+    // console.log('url', url)
+
+---
+
+<a 
+    href={Astro.props.href}
+    >
+    {Astro.props.text}
+</a>

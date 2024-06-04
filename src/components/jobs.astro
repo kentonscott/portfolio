@@ -1,0 +1,30 @@
+---
+import { contentfulClient } from "../lib/contentful";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { EntryFieldTypes } from "contentful";
+
+interface Job {
+  contentTypeId: "job",
+  fields: {
+    title: EntryFieldTypes.Text,
+    company: EntryFieldTypes.Text,
+    tenure: EntryFieldTypes.Text,
+    responsibilities: EntryFieldTypes.RichText
+    }
+}
+const { list } = Astro.props;
+---
+<body>
+{list.map((item) => (
+    <section>
+        <div class="align-left">
+            <h3 class="font-black text-xl text-black">{item.fields.title}</h3>
+        </div>
+        <div>
+          <h4 class="font-black text-l">{item.fields.company}</h4>
+          <p>{item.fields.tenure}</p>
+        </div>
+      <article set:html={documentToHtmlString(item.fields.responsibilities)}></article>
+    </section>
+  ))}
+</body>

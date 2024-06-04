@@ -1,0 +1,144 @@
+---
+import { contentfulClient } from "../lib/contentful";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { EntryFieldTypes } from "contentful";
+import Video from "./video.astro";
+import { FailedToLoadModuleSSR } from "astro/dist/core/errors/errors-data";
+
+interface VideoListEntry {
+    contentTypeId: "videoList",
+    fields: {
+        header: EntryFieldTypes.Text,
+        videos: EntryFieldTypes.Object
+    }
+}
+
+interface VideoEntry {
+    contentTypeId: "video",
+    fields: {
+        title: EntryFieldTypes.Text,
+        client: EntryFieldTypes.Text,
+        date: EntryFieldTypes.Date,
+        video: EntryFieldTypes.Object<{
+            fields: {
+                file: {
+                    url: string
+                }
+            }
+        }>
+    }
+}
+
+const videoListEntries = await contentfulClient.getEntries<VideoListEntry>({
+    content_type: "videoList",
+    "sys.id": Astro.props.id
+})
+
+const videoEntries = await contentfulClient.getEntries<VideoEntry>({
+    content_type: "video",
+    "sys.id": Astro.props.id
+})
+
+
+    // console.log("########## OUR ITEMS #########")
+    // // console.dir(videoListEntries, { depth: null })
+    // console.log('videolist', videoListEntries)
+    // // console.log('video.fields.video.fields', video.fields.video.fields)
+
+---
+
+<!-- component -->
+
+<script is:inline src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+</script>
+
+
+<html>
+<div class="relative flex min-h-screen flex-col">
+    <div class="min-h-28">
+        <div class="mx-auto py-4">
+            {videoListEntries.items.map((item) => (
+
+            <h2 class="font-black lg:text-8xl text-red uppercase tracking-tighter text-6xl duration-700">
+                {item.fields.header}
+            </h2>
+            <div class="grid lg:grid-cols-2 lg:gap-4 grid-cols-1">
+                {videoEntries.items.map((item) => (
+                    <div class="w-full">
+                        <div>
+                            <Video url={item.fields.video.fields.file.url} />
+                            
+                        </div>
+                        <span class="pt-4 grid grid-cols-3 gap-4">
+                            <span class="col-start-1 col-end-3 font-bold text-lg tracking-tight font-bold text-black uppercase">
+                                {item.fields.title}
+                            </span>
+                            <span class="col-end-7 col-span-2 text-md text-black font-medium uppercase flex justify-end">
+                                <span class="">
+                                    {item.fields.client}
+                                </span>
+                            </span>
+                        </span>
+                    </div>
+                ))}
+                
+            </div>
+            <div class="flex justify-between">
+            <a href="#" class="w-full group mt-4 inline-flex items-center md:justify-between gap-1 font-black uppercase tracking-tighter justify-center lg:text-8xl md:text-6xl text-4xl text-black hover:text-red transition delay-900">
+                
+
+                
+                <span class="hidden md:block flex items-center h-10 w-10 -translate-x-1 -translate-y-1 rotate-45 transform border-r-15 border-t-15 border-black opacity-0 group-hover:opacity-100 duration-200 delay-0" />
+                <span class="hidden md:block flex items-center h-10 w-10 -translate-x-1 -translate-y-1 rotate-45 transform border-r-15 border-t-15 border-black opacity-0 group-hover:opacity-100 duration-200 delay-75" />
+                <span class="hidden md:block flex items-center h-10 w-10 -translate-x-1 -translate-y-1 rotate-45 transform border-r-15 border-t-15 border-black opacity-0 group-hover:opacity-100 duration-200 delay-150" />
+                <span class="hidden md:block flex items-center h-10 w-10 -translate-x-1 -translate-y-1 rotate-45 transform border-r-15 border-t-15 border-black opacity-0 group-hover:opacity-100 duration-200 delay-200" />
+                <span class="hidden md:block flex items-center h-10 w-10 -translate-x-1 -translate-y-1 rotate-45 transform border-r-15 border-t-15 border-black opacity-0 group-hover:opacity-100 duration-200 delay-300" />
+                <span class="hidden md:block flex items-center h-10 w-10 -translate-x-1 -translate-y-1 rotate-45 transform border-r-15 border-t-15 border-black opacity-0 group-hover:opacity-100 duration-200 delay-[400ms]" />
+                <span class="hidden md:block flex items-center h-10 w-10 -translate-x-1 -translate-y-1 rotate-45 transform border-r-15 border-t-15 border-black opacity-0 group-hover:opacity-100 duration-200 delay-500" />
+                <span class="hidden md:block flex items-center h-10 w-10 -translate-x-1 -translate-y-1 rotate-45 transform border-r-15 border-t-15 border-black opacity-0 group-hover:opacity-100 duration-200 delay-700" />
+                <span class="hidden md:block flex items-center h-10 w-10 -translate-x-1 -translate-y-1 rotate-45 transform border-r-15 border-t-15 border-black opacity-0 group-hover:opacity-100 duration-200 delay-[800ms]" />
+                VIEW MORE
+            </a>
+            </div>
+            ))}   
+
+
+
+        </div>
+    </div>
+</div>
+
+<!-- <a href="#_" class="relative inline-flex items-center px-12 py-3 overflow-hidden text-lg font-medium text-indigo-600 border-2 border-indigo-600 rounded-full hover:text-white group hover:bg-gray-50">
+<span class="absolute left-0 block w-full h-0 transition-all bg-indigo-600 opacity-100 group-hover:h-full top-1/2 group-hover:top-0 duration-400 ease"></span>
+<span class="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+</span>
+<span class="relative">Button Text</span>
+</a>
+
+            <a href='#' class="group mt-4 inline-flex items-center gap-1 text-right font-black uppercase lg:text-6xl text-4xl text-black">
+                View More
+
+                <span aria-hidden="true" class="block transition-all group-hover:ms-1 rtl:rotate-180">
+                &rarr;
+                </span>
+
+
+            </a>
+
+ -->
+
+</html>
+
+
+<script>
+    var video = $('.wrap-video').hover(hoverVideo, hideVideo);
+
+    function hoverVideo(e) {
+        $('video', this).get(0).play();
+    }
+
+    function hideVideo(e) {
+        $('video', this).get(0).pause();
+    }
+</script>

@@ -1,0 +1,34 @@
+---
+import { contentfulClient } from "../lib/contentful";
+import Jobs from './jobs.astro';
+import Education from './education.astro';
+import type { EntryFieldTypes } from "contentful";
+
+interface Resume {
+  contentTypeId: "resume",
+  fields: {
+    title: EntryFieldTypes.Text,
+    jobList: EntryFieldTypes.Array,
+    educationList: EntryFieldTypes.Array
+    }
+}
+
+const entries = await contentfulClient.getEntries({
+  content_type: "resume",
+});
+const resume: Resume = entries.items[0] as any;
+const { title, jobList, educationList } = resume.fields;
+---
+<body>
+    <div>
+      <h2 class="font-black text-6xl text-black uppercase">
+        {title}
+      </h2>
+    </div>
+    <Jobs list={jobList || []} />
+    <h3>Education</h3>
+    <Education list={educationList || []} />
+</body>
+<!--<script define:vars={{jobList}}>-->
+<!--  console.log(jobList);-->
+<!--</script>-->

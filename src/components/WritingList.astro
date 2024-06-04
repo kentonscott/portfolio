@@ -1,0 +1,63 @@
+---
+import { contentfulClient } from "../lib/contentful";
+import type { BlogPost } from "./blogPost.astro";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+
+const entries = await contentfulClient.getEntries<BlogPost>({
+  content_type: "blogPost",
+});
+
+const posts = entries.items.map((item) => {
+  const { title, publishedDate, slug, body } = item.fields;
+  return {
+    title,
+    slug,
+    body: documentToHtmlString(item.fields.body),
+    publishedDate: new Date(publishedDate).toLocaleDateString()
+  };
+});
+
+// console.log(posts)
+// console.dir(posts, {depth:null})
+
+---
+
+
+<div class="mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-12 lg:px-8 lg:py-6">
+  <div class="py-2">
+    <h2 class="font-black lg:text-8xl text-red uppercase tracking-tighter text-4xl duration-700">
+      WRITING
+    </h2>
+  </div>
+
+
+  <div class="grid lg:grid-cols-3 border-1 gap-4 grid-cols-1 divide-x divide-gray-100">
+
+    {posts.map((post) => (
+        <div>
+            <article
+            class=" p-4 transition sm:p-6"
+            >
+
+            <a href={`/writing/${post.slug}/`}>
+                <h3 class="mt-0.5 text-xl font-black text-black">
+                {post.title}
+                </h3>
+            </a>
+
+                <article class="mt-2 line-clamp-3 text-sm/relaxed text-black" set:html={post.body} />
+
+
+            <a href={`/writing/${post.slug}/`} class="group mt-4 inline-flex items-center gap-1 text-sm font-bold italic text-black">
+                Continue
+
+                <span aria-hidden="true" class="block transition-all group-hover:ms-0.5 rtl:rotate-180">
+                &rarr;
+                </span>
+            </a>
+            </article>
+        </div>
+
+    ))}
+  </div>
+</div>

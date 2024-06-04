@@ -1,0 +1,51 @@
+---
+import { contentfulClient } from "../../lib/contentful";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { BlogPost } from "../../lib/contentful";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const entries = await contentfulClient.getEntries<BlogPost>({
+    content_type: "blogPost",
+  });
+
+    const pages = entries.items.map((item) => ({
+    params: { slug: item.fields.slug },
+    props: {
+        title: item.fields.title,
+        body: documentToHtmlString(item.fields.body),
+        date: new Date(item.fields.publishedDate).toLocaleDateString(),
+    },
+    }));
+    return pages;
+}
+
+const { body, title, date } = Astro.props;
+---
+<Layout>
+  <head>
+    <title>{title}</title>
+  </head>
+  <body class="h-dvh">
+    <div class="mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-12 lg:px-8 lg:py-6">
+      <h1 class="font-black lg:text-8xl text-6xl text-red uppercase tracking-tighter">WRITING</h1>
+      <div class="m-auto">
+        <h2 class="text-2xl font-black uppercase tracking-tighter">{title}</h2>
+        <time class="font-black">{date}</time>
+        <article set:html={body} />
+      </div>
+      <a href="javascript:history.back()" class="relative inline-flex items-center justify-end pt-6 w-full text-right overflow-hidden font-black uppercase italic lg:text-6xl text-3xl text-black transition duration-300 ease-in-out group">
+      <span class="absolute inset-0 flex items-center justify-end w-full h-full text-white duration-300 -translate-x-1/3 bg-neautral opacity-0 group-hover:opacity-100 group-hover:translate-x-0  ease">
+      
+      <svg class="w-200 h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25"><path style="fill:#232326" d="m17.5 5.999-.707.707 5.293 5.293H1v1h21.086l-5.294 5.295.707.707L24 12.499l-6.5-6.5z" data-name="Right"/></svg>
+
+      </span>
+
+      <span class="absolute flex items-center justify-end w-full h-full text-black transition-all duration-300 transform group-hover:translate-x-2/3 ease">View Other Work</span>
+      <span class="relative invisible">
+                  View Select Work
+      </span>
+      </a>
+    </div>
+  </body>
+</Layout>
