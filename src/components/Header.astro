@@ -2,7 +2,9 @@
 import { contentfulClient } from "../lib/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { EntryFieldTypes } from "contentful";
+import { Image } from 'astro:assets';
 import NavLink from "./NavLink.astro"
+import NavLogo from "./NavLogo.astro"
 
 interface NavItem {
   contentTypeId: "navItem",
@@ -12,25 +14,33 @@ interface NavItem {
   }
 }
 
-interface NavLogo {
-    contentTypeId: "navLogo",
-    fields: {
-        alt: EntryFieldTypes.Text,
-        useThisLogo: EntryFieldTypes.Boolean
-
-    }
-}
+// interface NavLogo {
+//     contentTypeId: "navLogo",
+//     fields: {
+//         alt: EntryFieldTypes.Text,
+//         useThisLogo: EntryFieldTypes.Boolean
+//         image: EntryFieldTypes.Object<{
+//             fields: {
+//               file: {
+//                 url: string
+//               }
+//             }
+//         }>
+//     }
+// }
 
 const navEntry = await contentfulClient.getEntries<NavItem>({
   content_type: "navItem",
   "sys.id": Astro.props.id
 });
 
-const navLogo = await contentfulClient.getEntries<NavLogo>({
-    content_type:"navLogo"
-});
+// const navLogo = await contentfulClient.getEntries<NavLogo>({
+//     content_type:"navLogo"
+// });
 
 
+// console.log("########## header items #########")
+// console.dir(navLogo, {depth:null})
 
 
 ---
@@ -42,17 +52,7 @@ const navLogo = await contentfulClient.getEntries<NavLogo>({
       <div class="flex-1 md:flex md:items-center md:gap-12">
         <a class="block text-teal-600" href="/">
           <span class="sr-only">Home</span>
-          <svg 
-            class="h-8"
-            viewBox="0 0 28 24"
-            fill="bg-red"
-            xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M1182.98,395.14c-85.9-21.48-153.19-42.95-153.19-94.49,0-42.95,31.5-71.58,103.08-71.58,85.9,0,151.76,37.22,199,85.9l170.37-153.19C1407.76,62.99,1307.54,0,1135.74,0c-207.59,0-356.49,120.26-356.49,306.38,0,209.02,150.33,276.31,294.92,316.4,108.81,30.07,203.3,48.68,203.3,104.51,0,37.49-4.5,100.9-286.32,89.61-92.98-3.73-297.69-33.13-493.93-315.81L849.41,18.61h-290.63L250.68,436.55v127.74l9.38,13.52.07-.02c312.61,443.09,579.14,448.91,737.38,461.6,379.33,30.43,529.07-133.57,529.07-319.26,0-234.79-190.41-284.9-343.6-324.99Z"
-                fill="currentColor"
-              />
-            <svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1526.59 1043.06"><defs><style>.cls-1{fill:#FF340A;stroke-width:0px;}</style></defs><path class="cls-1" d="M1182.98,395.14c-85.9-21.48-153.19-42.95-153.19-94.49,0-42.95,31.5-71.58,103.08-71.58,85.9,0,151.76,37.22,199,85.9l170.37-153.19C1407.76,62.99,1307.54,0,1135.74,0c-207.59,0-356.49,120.26-356.49,306.38,0,209.02,150.33,276.31,294.92,316.4,108.81,30.07,203.3,48.68,203.3,104.51,0,37.49-4.5,100.9-286.32,89.61-92.98-3.73-297.69-33.13-493.93-315.81L849.41,18.61h-290.63L250.68,436.55v127.74l9.38,13.52.07-.02c312.61,443.09,579.14,448.91,737.38,461.6,379.33,30.43,529.07-133.57,529.07-319.26,0-234.79-190.41-284.9-343.6-324.99Z"/><rect class="cls-1" y="18.61" width="250.54" height="1002.17"/></svg>
-          </svg>
+          <NavLogo />
         </a>
       </div>
       <div class="flex-1 md:flex md:items-center md:gap-12">
