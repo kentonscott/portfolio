@@ -2,7 +2,7 @@
 import { contentfulClient } from "../lib/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { EntryFieldTypes } from "contentful";
-import { Instagram, Linkedin, GitHub } from 'astro-feather-icons';
+import { Icon } from 'astro-icon/components';
 
 
 
@@ -39,19 +39,28 @@ const footerProps = await contentfulClient.getEntries<LayoutFooter>({
         </nav> -->
         <div class="mt-8 md:mb-8 flex justify-center space-x-6 md:order-3  ">
 
-            <a href="https://www.linkedin.com/in/kenton-scott/" target="_blank" rel="noopener noreferrer" class="text-black hover:text-red">
+            <a href="https://www.linkedin.com/in/kenton-scott/" target="_blank" rel="noopener noreferrer" class="text-black hover:text-red duration-200">
                 <span class="sr-only">Linkedin</span>
-              <Linkedin />
+              <Icon 
+                name="hugeicons:linkedin-02"
+                class="size-6"
+              />
             </a>
 
-            <a href="https://www.instagram.com/kentonscott/" target="_blank" rel="noopener noreferrer" class="text-black hover:text-red">
+            <a href="https://www.instagram.com/kentonscott/" target="_blank" rel="noopener noreferrer" class="text-black hover:text-red duration-200">
                 <span class="sr-only">Instagram</span>
-                <Instagram />
+                <Icon 
+                  name="hugeicons:instagram"
+                  class="size-6" 
+                />
             </a>
 
-            <a href="https://github.com/kentonscott/" target="_blank" rel="noopener noreferrer" class="text-black hover:text-red">
+            <a href="https://github.com/kentonscott/" target="_blank" rel="noopener noreferrer" class="text-black hover:text-red duration-200">
                 <span class="sr-only">GitHub</span>
-                <GitHub />
+                <Icon 
+                  name="hugeicons:github"
+                  class="size-6" 
+                />
             </a>
         </div>
         <div class="mt-8  md:order-1 md:mt-0 ">
