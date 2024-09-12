@@ -43,18 +43,12 @@
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script>
     window.addEventListener('load', () => {
-        console.log('masonry', Masonry);
         const elem = document.querySelector('.grid');
-        const msnry = new Masonry(elem, {
+        // @ts-expect-error
+        new window.Masonry(elem, {
             // options
             itemSelector: '.grid-item',
         });
-        console.log('msnry', msnry);
-    });
-
-        // @ts-ignore
-    const msnry = new Masonry(elem, {
-        itemSelector: '.grid-item',
     });
 </script>
 
