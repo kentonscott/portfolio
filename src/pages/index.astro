@@ -1,15 +1,14 @@
 ---
-import { contentfulClient } from "../lib/contentful";
 import HomeLayout from '../layouts/HomeLayout.astro';
-import Video from "../components/video.astro";
 import VideoList from "../components/VideoList.astro";
 import HomepageHero from "../components/HomepageHero.astro";
-import WritingList from "../components/WritingList.astro";
+import MasonryGrid from '../components/MasonryGrid.astro';
 
 ---
 <HomeLayout>
   <body>
     <HomepageHero />
-    <VideoList />
+    <!-- <VideoList /> -->
+    <MasonryGrid />
   </body>
 </HomeLayout>

@@ -1,10 +1,10 @@
 ---
     import { contentfulClient } from "../lib/contentful";
-    import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+    // import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
     import type { EntryFieldTypes } from "contentful";
 
-    const id0 = '5Q2gSirhTgHnS7KZ2VNR0E'
-    const id2 = '6EbNl20zZr6bWzp93dBuOf'
+    // const id0 = '5Q2gSirhTgHnS7KZ2VNR0E'
+    // const id2 = '6EbNl20zZr6bWzp93dBuOf'
 
     // console.log("########## OUR ITEMS #########")
     // console.dir(videoEntries, { depth: null })
@@ -18,7 +18,7 @@
 
 <div class="md:w-full">
     <div class="wrap-video">
-        <video class="object-cover h-96 w-full bg-black rounded-md" loop="" muted>
+        <video class="object-cover h-full w-full bg-neutral rounded-sm" loop="" autoplay playsinline muted>
             <source src={Astro.props.url} type="video/mp4">
         </video>
     </div>

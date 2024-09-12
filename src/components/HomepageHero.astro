@@ -36,7 +36,7 @@ const homepageHeroEntries = await contentfulClient.getEntries<HomepageHero>({
   {homepageHeroEntries.items.map((item) => (
       <div class="h-full flex items-center justify-center">
         <div class="pt-5 wrap-video object-center">
-          <video class="object-scale-down rounded-sm" loop="" controls autoplay muted>
+          <video class="object-scale-down rounded-sm" loop="" controls playsinline autoplay muted>
               <source src={item.fields.homepageVideo.fields.file.url} type="video/mp4">
           </video>
         </div>

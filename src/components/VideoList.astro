@@ -1,9 +1,8 @@
 ---
 import { contentfulClient } from "../lib/contentful";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { EntryFieldTypes } from "contentful";
 import Video from "./video.astro";
-import { FailedToLoadModuleSSR } from "astro/dist/core/errors/errors-data";
+// import { FailedToLoadModuleSSR } from "astro/dist/core/errors/errors-data";
 
 interface VideoListEntry {
     contentTypeId: "videoList",
@@ -73,7 +72,7 @@ const videoEntries = await contentfulClient.getEntries<VideoEntry>({
                     </svg>
 
             </div>
-            <div class="grid lg:grid-cols-2 lg:gap-4 grid-cols-1">
+            <div class="grid lg:grid-cols-3 lg:gap-4 grid-cols-1">
                 {videoEntries.items.map((item) => (
                     <div class="w-full">
                         <div>
@@ -81,10 +80,10 @@ const videoEntries = await contentfulClient.getEntries<VideoEntry>({
                             
                         </div>
                         <span class="pt-4 grid grid-cols-3 gap-4">
-                            <span class="col-start-1 col-end-3 font-bold text-lg tracking-tight font-bold text-black uppercase">
+                            <span class="col-start-1 col-end-3 font-bold text-md tracking-tight font-bold text-black uppercase">
                                 {item.fields.title}
                             </span>
-                            <span class="col-end-7 col-span-2 text-md text-black font-medium uppercase flex justify-end">
+                            <span class="col-end-7 col-span-2 text-md tracking-tight text-black font-medium uppercase flex justify-end">
                                 <span class="">
                                     {item.fields.client}
                                 </span>

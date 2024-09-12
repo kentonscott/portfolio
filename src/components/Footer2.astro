@@ -2,39 +2,57 @@
 import { contentfulClient } from "../lib/contentful";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { EntryFieldTypes } from "contentful";
-import { Instagram, Linkedin, GitHub, Film, Youtube, Twitch } from 'astro-feather-icons'
+import { Icon } from 'astro-icon/components';
 
 
 const socialMedia = {
   VIMEO: {
     url: "https://vimeo.com/",
     name: "Vimeo",
-    icon: <Film />,
+    icon: <Icon 
+            name="hugeicons:vimeo"
+            class="size-6"
+          />,
   },
   INSTAGRAM: {
     url: "https://instagram.com",
     name: "Instagram",
-    icon: <Instagram />,
+    icon: <Icon 
+            name="hugeicons:instagram"
+            class="size-6"
+          />,
   },
   LINKEDIN: {
     url: "https://linkedin.com/in",
     name: "LinkedIn",
-    icon: <Linkedin />,
+    icon: <Icon 
+            name="hugeicons:linkedin-02"
+            class="size-6"
+          />,
   },
   YOUTUBE: {
     url: "https://youtube.com",
     name: "YouTube",
-    icon: <Youtube />,
+    icon: <Icon 
+            name="hugeicons:youtube"
+            class="size-6"
+          />,
   },
   GITHUB: {
     url: "https://github.com",
     name: "GitHub",
-    icon: <GitHub />,
+    icon: <Icon 
+            name="hugeicons:github"
+            class="size-6"
+          />,
   },
   TWITCH: {
     url: "https://twitch.tv",
     name: "Twitch",
-    icon: <Twitch />,
+    icon: <Icon 
+            name="hugeicons:twitch"
+            class="size-6"
+          />,
   },
 }
 
@@ -65,8 +83,8 @@ const footerProps = await contentfulClient.getEntries<LayoutFooter>({
   content_type: "layoutFooter",
 });
 
-console.log("########## OUR FOOTER 2 ITEMS #########")
-console.dir(navEntry, {depth:null})
+// console.log("########## OUR FOOTER 2 ITEMS #########")
+// console.dir(navEntry, {depth:null})
 
 ---
 
@@ -90,17 +108,14 @@ console.dir(navEntry, {depth:null})
 
             <a href="#" class="text-black hover:text-red">
                 <span class="sr-only">Linkedin</span>
-              <Linkedin />
             </a>
 
             <a href="#" class="text-black hover:text-red">
                 <span class="sr-only">Instagram</span>
-                <Instagram />
             </a>
 
             <a href="#" class="text-black hover:text-red">
                 <span class="sr-only">GitHub</span>
-                <GitHub />
             </a>
         </div>
         <div class="mt-8  md:order-1 md:mt-0 ">

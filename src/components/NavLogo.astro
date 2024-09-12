@@ -36,7 +36,7 @@ const navLogo = await contentfulClient.getEntries<NavLogo>({
         <Image
             alt={item.fields.alt}
             src={item.fields.image.fields.file.url}
-            width={500} height={800}
+            width={1000} height={1000}
             class="h-16 w-16"
         />
     ))}
