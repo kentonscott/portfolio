@@ -1,7 +1,6 @@
 ---
     import { contentfulClient } from "../lib/contentful";
     import type { EntryFieldTypes } from "contentful";
-    import masonry from "masonry-layout/dist/masonry.pkgd.min?url";
     import Video from "./video.astro";
 
     interface VideoListEntry {
@@ -41,12 +40,31 @@
 
 ---
 
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script>
+    window.addEventListener('load', () => {
+        console.log('masonry', Masonry);
+        const elem = document.querySelector('.grid');
+        const msnry = new Masonry(elem, {
+            // options
+            itemSelector: '.grid-item',
+        });
+        console.log('msnry', msnry);
+    });
+
+        // @ts-ignore
+    const msnry = new Masonry(elem, {
+        itemSelector: '.grid-item',
+    });
+</script>
+
+
 <html>
 <div class="relative flex min-h-screen flex-col">
     <div class="min-h-28">
         <div class="mx-auto py-4">
             {videoListEntries.items.map((item) => (
-            <div class="flex flex-row justify-start margin-auto group">
+            <div class="flex flex-row justify-start margin-auto group gap-4">
                 <h2 class="font-black lg:text-8xl text-red uppercase tracking-tighter text-6xl duration-700">
                     {item.fields.header}
                 </h2>
@@ -64,7 +82,7 @@
             </div>
             <div class="grid max-w-full">
                 {videoEntries.items.map((item) => (
-                <div class="grid-item w-full md:w-1/2 lg:w-1/3 px-4">
+                <div class="grid-item w-full sm:w-1/2 lg:w-1/3 px-2">
                     <div>
                         <Video url={item.fields.video.fields.file.url} />
                     </div>
@@ -103,15 +121,16 @@
 
 </html>
 
-<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-<script>
-    window.addEventListener('load', () => {
-        console.log('masonry', Masonry);
-        const elem = document.querySelector('.grid');
-        const msnry = new Masonry(elem, {
-            // options
-            itemSelector: '.grid-item',
-        });
-        console.log('msnry', msnry);
-    });
-</script>
+
+
+<!-- <script>
+    var video = $('.wrap-video').hover(hoverVideo, hideVideo);
+
+    function hoverVideo(e) {
+        $('video', this).get(0).play();
+    }
+
+    function hideVideo(e) {
+        $('video', this).get(0).pause();
+    }
+</script> -->
