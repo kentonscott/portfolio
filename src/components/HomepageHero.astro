@@ -1,31 +1,31 @@
 ---
-import { contentfulClient } from "../lib/contentful";
-import type { EntryFieldTypes } from "contentful";
-// import { Image } from 'astro:assets';
+  import { contentfulClient } from "../lib/contentful";
+  import type { EntryFieldTypes } from "contentful";
+  // import { Image } from 'astro:assets';
 
-// interface ImageProps {
-//   contentTypeId: ""
-// }
+  // interface ImageProps {
+  //   contentTypeId: ""
+  // }
 
-interface HomepageHero {
-  contentTypeId: "homepageHero",
-  fields: {
-    heading: EntryFieldTypes.Text,
-    kicker: EntryFieldTypes.Text,
-    homepageVideo: EntryFieldTypes.Object<{
-            fields: {
-                file: {
-                    url: string
-                }
-            }
-        }>
-    text: EntryFieldTypes.Text,
+  interface HomepageHero {
+    contentTypeId: "homepageHero",
+    fields: {
+      heading: EntryFieldTypes.Text,
+      kicker: EntryFieldTypes.Text,
+      homepageVideo: EntryFieldTypes.Object<{
+        fields: {
+          file: {
+            url: string
+          }
+        }
+      }>
+      text: EntryFieldTypes.Text,
+    }
   }
-}
 
-const homepageHeroEntries = await contentfulClient.getEntries<HomepageHero>({
-  content_type: "homepageHero",
-});
+  const homepageHeroEntries = await contentfulClient.getEntries<HomepageHero>({
+    content_type: "homepageHero",
+  });
 
 // console.log("########## HomepageHero items #########")
 // console.dir(homepageHeroEntries, {depth:null})
@@ -34,12 +34,12 @@ const homepageHeroEntries = await contentfulClient.getEntries<HomepageHero>({
 
 <section>
   {homepageHeroEntries.items.map((item) => (
-      <div class="h-full flex items-center justify-center">
-        <div class="pt-5 wrap-video object-center">
-          <video class="object-scale-down rounded-sm" loop="" controls playsinline autoplay muted>
-              <source src={item.fields.homepageVideo.fields.file.url} type="video/mp4">
-          </video>
-        </div>
-      </div>
+  <div class="h-full flex items-center justify-center">
+    <div class="pt-5 wrap-video object-center">
+      <video class="object-scale-down rounded-sm" loop="" controls playsinline autoplay muted>
+        <source src={item.fields.homepageVideo.fields.file.url} type="video/mp4">
+      </video>
+    </div>
+  </div>
   ))}
 </section>

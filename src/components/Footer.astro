@@ -1,34 +1,30 @@
 ---
-import { contentfulClient } from "../lib/contentful";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import type { EntryFieldTypes } from "contentful";
-import { Icon } from 'astro-icon/components';
+  import { contentfulClient } from "../lib/contentful";
+  import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+  import type { EntryFieldTypes } from "contentful";
+  import { Icon } from 'astro-icon/components';
 
 
 
-interface LayoutFooter {
-  contentTypeId: "layoutFooter",
-  fields: {
-    name: EntryFieldTypes.Text,
-    copyright: EntryFieldTypes.Text,
+  interface LayoutFooter {
+    contentTypeId: "layoutFooter",
+    fields: {
+      name: EntryFieldTypes.Text,
+      copyright: EntryFieldTypes.Text,
+    }
   }
-}
 
-const footerProps = await contentfulClient.getEntries<LayoutFooter>({
-  content_type: "layoutFooter",
-});
+  const footerProps = await contentfulClient.getEntries<LayoutFooter>({
+    content_type: "layoutFooter",
+  });
 
 
 ---
 
-
-
-
-
 <footer class="border-t">
   {footerProps.items.map((item) => (
-    <div class="mx-auto max-w-7xl py-8 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
-        <!-- <nav class="-mx-5 -my-2 flex flex-wrap justify-center order-2" aria-label="Footer">
+  <div class="mx-auto max-w-7xl py-8 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
+    <!-- <nav class="-mx-5 -my-2 flex flex-wrap justify-center order-2" aria-label="Footer">
             <div class="px-5">
                 <a href="#" class="text-base text-white hover:text-gray-200">Terms of Service</a>
             </div>
@@ -37,38 +33,32 @@ const footerProps = await contentfulClient.getEntries<LayoutFooter>({
                 <a href="#" class="text-base text-white hover:text-gray-200">Privacy Policy</a>
             </div>
         </nav> -->
-        <div class="mt-8 md:mb-8 flex justify-center space-x-6 md:order-3  ">
+    <div class="mt-8 md:mb-8 flex justify-center space-x-6 md:order-3  ">
 
-            <a href="https://www.linkedin.com/in/kenton-scott/" target="_blank" rel="noopener noreferrer" class="text-black hover:text-red duration-200">
-                <span class="sr-only">Linkedin</span>
-              <Icon 
-                name="hugeicons:linkedin-02"
-                class="size-6"
-              />
-            </a>
+      <a href="https://www.linkedin.com/in/kenton-scott/" target="_blank" rel="noopener noreferrer"
+        class="text-black hover:text-red duration-200">
+        <span class="sr-only">Linkedin</span>
+        <Icon name="hugeicons:linkedin-02" class="size-6" />
+      </a>
 
-            <a href="https://www.instagram.com/kentonscott/" target="_blank" rel="noopener noreferrer" class="text-black hover:text-red duration-200">
-                <span class="sr-only">Instagram</span>
-                <Icon 
-                  name="hugeicons:instagram"
-                  class="size-6" 
-                />
-            </a>
+      <a href="https://www.instagram.com/kentonscott/" target="_blank" rel="noopener noreferrer"
+        class="text-black hover:text-red duration-200">
+        <span class="sr-only">Instagram</span>
+        <Icon name="hugeicons:instagram" class="size-6" />
+      </a>
 
-            <a href="https://github.com/kentonscott/" target="_blank" rel="noopener noreferrer" class="text-black hover:text-red duration-200">
-                <span class="sr-only">GitHub</span>
-                <Icon 
-                  name="hugeicons:github"
-                  class="size-6" 
-                />
-            </a>
-        </div>
-        <div class="mt-8  md:order-1 md:mt-0 ">
-            <p class="text-center text-base text-black">
-              {item.fields.copyright}
-            </p>
-        </div>
+      <a href="https://github.com/kentonscott/" target="_blank" rel="noopener noreferrer"
+        class="text-black hover:text-red duration-200">
+        <span class="sr-only">GitHub</span>
+        <Icon name="hugeicons:github" class="size-6" />
+      </a>
     </div>
+    <div class="mt-8  md:order-1 md:mt-0 ">
+      <p class="text-center text-base text-black">
+        {item.fields.copyright}
+      </p>
+    </div>
+  </div>
   ))}
 </footer>
 

@@ -1,101 +1,97 @@
 ---
-import { contentfulClient } from "../lib/contentful";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import type { EntryFieldTypes } from "contentful";
-import { Icon } from 'astro-icon/components';
+  import { contentfulClient } from "../lib/contentful";
+  import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+  import type { EntryFieldTypes } from "contentful";
+  import { Icon } from 'astro-icon/components';
 
 
-const socialMedia = {
-  VIMEO: {
-    url: "https://vimeo.com/",
-    name: "Vimeo",
-    icon: <Icon 
-            name="hugeicons:vimeo"
-            class="size-6"
-          />,
-  },
-  INSTAGRAM: {
-    url: "https://instagram.com",
-    name: "Instagram",
-    icon: <Icon 
-            name="hugeicons:instagram"
-            class="size-6"
-          />,
-  },
-  LINKEDIN: {
-    url: "https://linkedin.com/in",
-    name: "LinkedIn",
-    icon: <Icon 
-            name="hugeicons:linkedin-02"
-            class="size-6"
-          />,
-  },
-  YOUTUBE: {
-    url: "https://youtube.com",
-    name: "YouTube",
-    icon: <Icon 
-            name="hugeicons:youtube"
-            class="size-6"
-          />,
-  },
-  GITHUB: {
-    url: "https://github.com",
-    name: "GitHub",
-    icon: <Icon 
-            name="hugeicons:github"
-            class="size-6"
-          />,
-  },
-  TWITCH: {
-    url: "https://twitch.tv",
-    name: "Twitch",
-    icon: <Icon 
-            name="hugeicons:twitch"
-            class="size-6"
-          />,
-  },
-}
-
-const getSocialURL = ({ service, username }) => {
-  const domain = socialMedia[service]?.url
-  if (!domain) return false
-  return `${domain}/${username}`
-}
-
-const getSocialIcon = ({ service }) => {
-  return socialMedia[service]?.icon
-}
-
-const getSocialName = ({ service }) => {
-  return socialMedia[service]?.name
-}
-
-
-interface LayoutFooter {
-  contentTypeId: "layoutFooter",
-  fields: {
-    name: EntryFieldTypes.Text,
-    copyright: EntryFieldTypes.Text,
+  const socialMedia = {
+    VIMEO: {
+      url: "https://vimeo.com/",
+      name: "Vimeo",
+      icon: <Icon
+        name="hugeicons:vimeo"
+        class="size-6"
+      />,
+    },
+    INSTAGRAM: {
+      url: "https://instagram.com",
+      name: "Instagram",
+      icon: <Icon
+        name="hugeicons:instagram"
+        class="size-6"
+      />,
+    },
+    LINKEDIN: {
+      url: "https://linkedin.com/in",
+      name: "LinkedIn",
+      icon: <Icon
+        name="hugeicons:linkedin-02"
+        class="size-6"
+      />,
+    },
+    YOUTUBE: {
+      url: "https://youtube.com",
+      name: "YouTube",
+      icon: <Icon
+        name="hugeicons:youtube"
+        class="size-6"
+      />,
+    },
+    GITHUB: {
+      url: "https://github.com",
+      name: "GitHub",
+      icon: <Icon
+        name="hugeicons:github"
+        class="size-6"
+      />,
+    },
+    TWITCH: {
+      url: "https://twitch.tv",
+      name: "Twitch",
+      icon: <Icon
+        name="hugeicons:twitch"
+        class="size-6"
+      />,
+    },
   }
-}
 
-const footerProps = await contentfulClient.getEntries<LayoutFooter>({
-  content_type: "layoutFooter",
-});
+  const getSocialURL = ({ service, username }) => {
+    const domain = socialMedia[service]?.url
+    if (!domain) return false
+    return `${domain}/${username}`
+  }
+
+  const getSocialIcon = ({ service }) => {
+    return socialMedia[service]?.icon
+  }
+
+  const getSocialName = ({ service }) => {
+    return socialMedia[service]?.name
+  }
+
+
+  interface LayoutFooter {
+    contentTypeId: "layoutFooter",
+    fields: {
+      name: EntryFieldTypes.Text,
+      copyright: EntryFieldTypes.Text,
+    }
+  }
+
+  const footerProps = await contentfulClient.getEntries<LayoutFooter>({
+    content_type: "layoutFooter",
+  });
 
 // console.log("########## OUR FOOTER 2 ITEMS #########")
 // console.dir(navEntry, {depth:null})
 
 ---
 
-
-
-
-
 <footer class="border-t">
   {footerProps.items.map((item) => (
-    <div class="mx-auto max-w-7xl py-8 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
-        <!-- <nav class="-mx-5 -my-2 flex flex-wrap justify-center order-2" aria-label="Footer">
+  <div class="mx-auto max-w-7xl py-8 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
+    <!-- <nav class="-mx-5 -my-2 flex flex-wrap justify-center order-2" aria-label="Footer">
             <div class="px-5">
                 <a href="#" class="text-base text-white hover:text-gray-200">Terms of Service</a>
             </div>
@@ -104,26 +100,26 @@ const footerProps = await contentfulClient.getEntries<LayoutFooter>({
                 <a href="#" class="text-base text-white hover:text-gray-200">Privacy Policy</a>
             </div>
         </nav> -->
-        <div class="mt-8 md:mb-8 flex justify-center space-x-6 md:order-3  ">
+    <div class="mt-8 md:mb-8 flex justify-center space-x-6 md:order-3  ">
 
-            <a href="#" class="text-black hover:text-red">
-                <span class="sr-only">Linkedin</span>
-            </a>
+      <a href="#" class="text-black hover:text-red">
+        <span class="sr-only">Linkedin</span>
+      </a>
 
-            <a href="#" class="text-black hover:text-red">
-                <span class="sr-only">Instagram</span>
-            </a>
+      <a href="#" class="text-black hover:text-red">
+        <span class="sr-only">Instagram</span>
+      </a>
 
-            <a href="#" class="text-black hover:text-red">
-                <span class="sr-only">GitHub</span>
-            </a>
-        </div>
-        <div class="mt-8  md:order-1 md:mt-0 ">
-            <p class="text-center text-base text-black">
-              {item.fields.copyright}
-            </p>
-        </div>
+      <a href="#" class="text-black hover:text-red">
+        <span class="sr-only">GitHub</span>
+      </a>
     </div>
+    <div class="mt-8  md:order-1 md:mt-0 ">
+      <p class="text-center text-base text-black">
+        {item.fields.copyright}
+      </p>
+    </div>
+  </div>
   ))}
 </footer>
 

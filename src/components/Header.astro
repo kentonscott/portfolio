@@ -1,36 +1,36 @@
 ---
-import { contentfulClient } from "../lib/contentful";
-import type { EntryFieldTypes } from "contentful";
-// import NavLink from "./NavLink.astro"
-import NavLogo from "./NavLogo.astro"
+  import { contentfulClient } from "../lib/contentful";
+  import type { EntryFieldTypes } from "contentful";
+  // import NavLink from "./NavLink.astro"
+  import NavLogo from "./NavLogo.astro"
 
-interface NavItem {
-  contentTypeId: "navItem",
-  fields: {
-    text: EntryFieldTypes.Text,
-    href: EntryFieldTypes.Text,
+  interface NavItem {
+    contentTypeId: "navItem",
+    fields: {
+      text: EntryFieldTypes.Text,
+      href: EntryFieldTypes.Text,
+    }
   }
-}
 
-// interface NavLogo {
-//     contentTypeId: "navLogo",
-//     fields: {
-//         alt: EntryFieldTypes.Text,
-//         useThisLogo: EntryFieldTypes.Boolean
-//         image: EntryFieldTypes.Object<{
-//             fields: {
-//               file: {
-//                 url: string
-//               }
-//             }
-//         }>
-//     }
-// }
+  // interface NavLogo {
+  //     contentTypeId: "navLogo",
+  //     fields: {
+  //         alt: EntryFieldTypes.Text,
+  //         useThisLogo: EntryFieldTypes.Boolean
+  //         image: EntryFieldTypes.Object<{
+  //             fields: {
+  //               file: {
+  //                 url: string
+  //               }
+  //             }
+  //         }>
+  //     }
+  // }
 
-const navEntry = await contentfulClient.getEntries<NavItem>({
-  content_type: "navItem",
-  "sys.id": Astro.props.id
-});
+  const navEntry = await contentfulClient.getEntries<NavItem>({
+    content_type: "navItem",
+    "sys.id": Astro.props.id
+  });
 
 // const navLogo = await contentfulClient.getEntries<NavLogo>({
 //     content_type:"navLogo"
@@ -42,7 +42,6 @@ const navEntry = await contentfulClient.getEntries<NavItem>({
 
 
 ---
-
 
 <header class="bg-neutral border-b border-black">
   <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
@@ -60,52 +59,42 @@ const navEntry = await contentfulClient.getEntries<NavItem>({
         <nav aria-label="Global" class="hidden md:block">
           <ul class="flex items-center gap-6">
             {navEntry.items.map((item) => {
-                const { text, href } = item.fields;
-                return <a 
-                    href={href}
-                    class="hover:before:scale-x-100 hover:before:origin-left text-xl text-black hover:text-red tracking-tighter font-black text-transform: uppercase relative before:w-full before:h-px before:origin-right before:transition-transform before:duration-300 before:scale-x-0 before:bg-red before:absolute before:left-0 before:bottom-0 before:rounded-sm"
-                    >
-                    {text}
-                </a>
+            const { text, href } = item.fields;
+            return <a href={href}
+              class="hover:before:scale-x-100 hover:before:origin-left text-xl text-black hover:text-red tracking-tighter font-black text-transform: uppercase relative before:w-full before:h-px before:origin-right before:transition-transform before:duration-300 before:scale-x-0 before:bg-red before:absolute before:left-0 before:bottom-0 before:rounded-sm">
+              {text}
+            </a>
             })}
           </ul>
         </nav>
         <!-- Mobile menu show/hide based on menu open state. -->
         <label class="relative z-40 cursor-pointer px-3 py-6 md:hidden block" for="mobile-menu">
-            <input class="peer hidden" type="checkbox" id="mobile-menu" />
-            <div
-                class="relative z-50 block h-[1px] w-7 bg-black bg-transparent content-[''] before:absolute before:top-[-0.35rem] before:z-50 before:block before:h-full before:w-full before:bg-black before:transition-all before:duration-500 before:ease-out before:content-[''] after:absolute after:right-0 after:bottom-[-0.35rem] after:block after:h-full after:w-full after:bg-black after:transition-all after:duration-500 after:ease-out after:content-[''] peer-checked:bg-transparent before:peer-checked:top-0 before:peer-checked:w-full before:peer-checked:rotate-45 before:peer-checked:transform after:peer-checked:bottom-0 after:peer-checked:w-full after:peer-checked:-rotate-45 after:peer-checked:transform"
-            >
+          <input class="peer hidden" type="checkbox" id="mobile-menu" />
+          <div
+            class="relative z-50 block h-[1px] w-7 bg-black bg-transparent content-[''] before:absolute before:top-[-0.35rem] before:z-50 before:block before:h-full before:w-full before:bg-black before:transition-all before:duration-500 before:ease-out before:content-[''] after:absolute after:right-0 after:bottom-[-0.35rem] after:block after:h-full after:w-full after:bg-black after:transition-all after:duration-500 after:ease-out after:content-[''] peer-checked:bg-transparent before:peer-checked:top-0 before:peer-checked:w-full before:peer-checked:rotate-45 before:peer-checked:transform after:peer-checked:bottom-0 after:peer-checked:w-full after:peer-checked:-rotate-45 after:peer-checked:transform">
+          </div>
+          <div class="fixed inset-0 z-40 hidden h-full w-full backdrop-blur-sm peer-checked:block">
+            &nbsp;
+          </div>
+          <div
+            class="fixed top-0 right-0 z-40 h-full w-full -translate-y-full overflow-y-auto overscroll-y-none border-b transition duration-700 peer-checked:translate-y-0">
+            <div class="float-right min-h-full content-evenly w-full bg-neutral px-6 pt-12 shadow-2xl">
+              <menu>
+                <ul class="flex flex-col items-center gap-16">
+                  {navEntry.items.map((item:any) => {
+                  // console.log(item, "########## OUR ITEMS #########")
+                  const { text, href } = item.fields;
+                  return <a href={href}
+                    class="text-3xl tracking-tighter text-black hover:text-red font-black text-transform: uppercase relative">
+                    {text}
+                  </a>
+                  })}
+                </ul>
+              </menu>
             </div>
-            <div
-                class="fixed inset-0 z-40 hidden h-full w-full backdrop-blur-sm peer-checked:block"
-            >
-                &nbsp;
-            </div>
-            <div
-                class="fixed top-0 right-0 z-40 h-full w-full -translate-y-full overflow-y-auto overscroll-y-none border-b transition duration-700 peer-checked:translate-y-0"
-            >
-                <div class="float-right min-h-full content-evenly w-full bg-neutral px-6 pt-12 shadow-2xl">
-                    <menu>
-                      <ul class="flex flex-col items-center gap-16">
-                        {navEntry.items.map((item:any) => {
-                            // console.log(item, "########## OUR ITEMS #########")
-                            const { text, href } = item.fields;
-                            return <a 
-                                href={href}
-                                class="text-3xl tracking-tighter text-black hover:text-red font-black text-transform: uppercase relative"
-                                >
-                                {text}
-                            </a>
-                        })}
-                      </ul>
-                    </menu>
-                </div>
-            </div>
+          </div>
         </label>
       </div>
     </div>
   </div>
 </header>
-
-

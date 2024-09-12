@@ -1,27 +1,27 @@
 ---
-import { contentfulClient } from "../lib/contentful";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import type { EntryFieldTypes } from "contentful";
-import { Image } from 'astro:assets';
+    import { contentfulClient } from "../lib/contentful";
+    import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+    import type { EntryFieldTypes } from "contentful";
+    import { Image } from 'astro:assets';
 
-interface NavLogo {
-    contentTypeId: "navLogo",
-    fields: {
-        alt: EntryFieldTypes.Text,
-        useThisLogo: EntryFieldTypes.Boolean
-        image: EntryFieldTypes.Object<{
-            fields: {
-              file: {
-                url: string
-              }
-            }
-        }>
+    interface NavLogo {
+        contentTypeId: "navLogo",
+        fields: {
+            alt: EntryFieldTypes.Text,
+            useThisLogo: EntryFieldTypes.Boolean
+            image: EntryFieldTypes.Object<{
+                fields: {
+                    file: {
+                        url: string
+                    }
+                }
+            }>
+        }
     }
-}
 
-const navLogo = await contentfulClient.getEntries<NavLogo>({
-    content_type:"navLogo"
-});
+    const navLogo = await contentfulClient.getEntries<NavLogo>({
+        content_type: "navLogo"
+    });
 
 
 // console.log("########## header items #########")
@@ -29,15 +29,9 @@ const navLogo = await contentfulClient.getEntries<NavLogo>({
 
 ---
 
-
 <a class="block text-teal-600" href="/">
     <span class="sr-only">Home</span>
     {navLogo.items.map((item) => (
-        <Image
-            alt={item.fields.alt}
-            src={item.fields.image.fields.file.url}
-            width={1000} height={1000}
-            class="h-16 w-16"
-        />
+    <Image alt={item.fields.alt} src={item.fields.image.fields.file.url} width={1000} height={1000} class="h-16 w-16" />
     ))}
 </a>
