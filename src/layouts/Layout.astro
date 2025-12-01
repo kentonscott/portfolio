@@ -1,29 +1,69 @@
 ---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import NavLogo from "../components/NavLogo.astro";
 
-// import Header from './Header.astro';
-// import Logo from './Logo.astro';
-// import Footer from '../components/footer.astro';
-import Header from "../components/Header.astro"
-import Footer from "../components/Footer.astro"
-// import { ViewTransitions } from 'astro:transitions';
+import { contentfulClient } from "../lib/contentful";
+import type { EntryFieldTypes } from "contentful";
 
---- 
+interface Homepage {
+  contentTypeId: "homepage",
+  fields: {
+    title: EntryFieldTypes.Text;
+    favicon: EntryFieldTypes.Object<{
+      fields: {
+        file: {
+          url: string;
+        };
+      };
+    }>;
+  };
+}
+
+const homepage = await contentfulClient.getEntries<Homepage>({
+  content_type: "homepage"
+});
+
+const homepageFields = homepage.items[0]?.fields;
+
+// TITLE
+const siteTitle = homepageFields?.title || "Kenton Scott Portfolio";
+
+// FIX: await the slot render to avoid [object Promise]
+let pageTitle = siteTitle;
+if (Astro.slots.has("title")) {
+  const renderedTitle = await Astro.slots.render("title");
+  pageTitle = `${renderedTitle} | ${siteTitle}`;
+}
+
+// FAVICON 
+const rawFaviconUrl = homepageFields?.favicon?.fields?.file?.url;
+const faviconUrl = rawFaviconUrl ? `https:${rawFaviconUrl}` : null;
+---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{pageTitle}</title>
+
+    {faviconUrl && (
+      <>
+        <link rel="icon" href={faviconUrl} />
+        <link rel="apple-touch-icon" href={faviconUrl} />
+      </>
+    )}
+
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <slot name="head" />
-    <!-- <ViewTransitions /> -->
   </head>
 
   <body class="bg-neutral min-h-screen flex flex-col selection:bg-pink selection:text-neutral">
-      <Header />
-      <div class="max-w-screen-xl mx-auto flex-1 lg:px-5 sm:px-1">
-        <slot />
+    <Header />
+    <div class="max-w-screen-xl mx-auto flex-1 lg:px-5 sm:px-1">
+      <slot />
     </div>
-      <Footer />
+    <Footer />
   </body>
 </html>

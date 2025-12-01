@@ -1,64 +1,89 @@
 ---
-    import { contentfulClient } from "../lib/contentful";
-    import type { EntryFieldTypes } from "contentful";
-    // import Logo from "./Logo.astro";
-    import { Image } from 'astro:assets';
+import { contentfulClient } from "../lib/contentful";
+import type { EntryFieldTypes, Asset } from "contentful";
+import { Image } from "astro:assets";
 
-    interface LogoList {
-        contentTypeId: "homepageLogoList"
-        fields: {
-            name: EntryFieldTypes.Text,
-            text: EntryFieldTypes.Text,
-            logos: EntryFieldTypes.Object,
-        }
-    }
+//
+// Types
+//
+interface HomepageLogo {
+  contentTypeId: "homepageLogo";
+  fields: {
+    alt: EntryFieldTypes.Text;
+    image: Asset;
+  };
+}
 
-    interface HomepageLogos {
-        contentTypeId: "homepageLogo"
-        fields: {
-            alt: EntryFieldTypes.Text,
-            image: EntryFieldTypes.Object<{
-                fields: {
-                    file: {
-                        url
-                    }
-                }
-            }>
-        }
-    }
+interface LogoListType {
+  contentTypeId: "homepageLogoList";
+  fields: {
+    name: EntryFieldTypes.Text;
+    text: EntryFieldTypes.Text;
+    logos: EntryFieldTypes.Array<EntryFieldTypes.EntryLink<HomepageLogo>>;
+  };
+}
 
-    const logoListEntries = await contentfulClient.getEntries<LogoList>({
-        content_type: "homepageLogoList",
-        "sys.id": Astro.props.id
-    })
+//
+// Fetch the LogoList entry by sys.id (passed from parent)
+//
+const logoListEntries = await contentfulClient.getEntries<LogoListType>({
+  content_type: "homepageLogoList",
+  "sys.id": Astro.props.id,
+});
 
-    const logoEntries = await contentfulClient.getEntries<HomepageLogos>({
-        content_type: "homepageLogo",
-        "sys.id": Astro.props.id
-    })
+const logoList = logoListEntries.items[0];
 
+//
+// Extract referenced logos in correct order
+//
+const referencedLogos = logoList?.fields?.logos ?? [];
 
-// console.log("########## LOGOS #########")
-// console.dir(logoListEntries, {depth:null})
-// console.log('video.fields.video.fields', video.fields.video.fields)
+//
+// Fetch each logo entry in the exact order they appear in Contentful
+//
+const logoEntries = [];
 
+for (const ref of referencedLogos) {
+  if (ref && "sys" in ref) {
+    const result = await contentfulClient.getEntry<HomepageLogo>(ref.sys.id);
+    logoEntries.push(result);
+  }
+}
 
+//
+// Helper to safely extract asset URLs
+//
+function getAssetUrl(asset: any): string | null {
+  if (asset && "fields" in asset && asset.fields?.file?.url) {
+    return `https:${asset.fields.file.url}`;
+  }
+  return null;
+}
 ---
 
 <section class="bg-transparent dark:bg-gray-900">
-    <div class="py-8 lg:py-16 mx-auto max-w-screen-xl px-4">
-        {logoListEntries.items.map((item) => (
-        <h2
-            class="mb-8 lg:mb-16 text-3xl font-black tracking-tight leading-tight text-center uppercase text-black md:text-4xl">
-            {item.fields.text}</h2>
-        <div
-            class="grid grid-cols-2 gap-8 text-gray-500 sm:gap-12 md:grid-cols-3 lg:grid-cols-7 justify-center items-center">
-            {logoEntries.items.map((item) => (
-            <Image
-                class="flex justify-center items-center col-span-1 hue-rotate-[155deg] saturate-[.1] brightness-[.52] hover:filter-none duration-300"
-                src={item.fields.image.fields.file.url} alt={item.fields.alt} width={150} height={150} />
-            ))}
-        </div>
-        ))}
+  <div class="py-8 lg:py-16 mx-auto max-w-screen-xl px-4">
+    <h2
+      class="mb-8 lg:mb-16 text-3xl font-black tracking-tight leading-tight text-center uppercase text-black md:text-4xl"
+    >
+      {logoList?.fields?.text}
+    </h2>
+
+    <div
+      class="grid grid-cols-2 gap-8 text-gray-500 sm:gap-12 md:grid-cols-3 lg:grid-cols-7 justify-center items-center"
+    >
+      {logoEntries.map((item) => {
+        const src = getAssetUrl(item.fields.image);
+        return src ? (
+          <Image
+            class="flex justify-center items-center col-span-1 hue-rotate-[155deg] saturate-[.1] brightness-[.52] hover:filter-none duration-300"
+            src={src}
+            alt={item.fields.alt}
+            width={150}
+            height={150}
+          />
+        ) : null;
+      })}
     </div>
+  </div>
 </section>
